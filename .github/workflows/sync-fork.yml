@@ -1,0 +1,24 @@
+name: Upstream Sync
+
+on:
+  schedule:
+    # 每天 UTC 时间 0 点（北京时间 8 点）自动运行一次
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许在网页端手动触发
+
+jobs:
+  sync_latest_from_upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Sync upstream changes
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          upstream_sync_repo: yiyihuohuo/WMPFWorkbench-go
+          upstream_sync_branch: main
+          target_sync_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
